@@ -1,0 +1,48 @@
+---
+title: "Gun Control vs Gun Shop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+if(!require("pacman")) install.packages("pacman")
+pacman::p_load(gtrendsR,maps,ggplot2)
+if(!require("gtendsR")) install.packages("gtrendsR")
+install.packages("reshape2")
+install.packages("anytime")
+
+library(gtrendsR)
+library(reshape2)
+library(anytime)
+library(pacman)
+
+```
+
+
+```{r}
+guns = gtrends(c("gun control","gun shop"), c("web","news","images","froogle","youtube"),time="all", geo = c("US"))
+head(guns)
+guns = guns$interest_by_region
+statesMap=map_data("state")
+guns$region = sapply(guns$location,tolower)
+gunsMerged = merge(statesMap,guns,by="region")
+
+gunsMerged
+regionLabels <- aggregate(cbind(long, lat) ~ region, data=gunsMerged, 
+                          FUN=function(x) mean(range(x)))
+
+gunsPlot= ggplot() +
+  geom_polygon(data=gunsMerged,aes(x=long,y=lat,group=group,fill=hits),colour="white") +
+  scale_fill_continuous(low="green",high="darkblue",guide="colorbar",trans="log10") +
+  geom_text(data=regionLabels, aes(long, lat, label = region), size=2) +
+  theme_bw() +
+  coord_fixed(1.3) +
+  labs(title="Google search interest for Gun Control in each state\n in the US") 
+```
+
+## Including Plots
+
+```{r pressure, echo=FALSE}
+gunsPlot
+```
+

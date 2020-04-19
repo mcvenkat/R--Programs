@@ -1,0 +1,24 @@
+---
+title: "Viridis Demo"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r setup,include= FALSE}
+install.packages("viridis")
+library(viridis)
+```
+
+## Viridis colors
+
+```{r}
+image(volcano,col=viridis(200))
+```
+
+## Magma colors
+```{r}
+image(volcano,col=viridis(200,option="A"))

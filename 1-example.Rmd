@@ -1,0 +1,32 @@
+---
+title: "Viridis Demo"
+output:
+  html_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r include = FALSE}
+install.packages("viridis")
+library(viridis)
+```
+
+
+## Viridis colors
+
+```{r}
+image(volcano, col = viridis(200))
+```
+
+## Magma colors
+
+```{r}
+image(volcano, col = viridis(200, option = "A"))
+```
+require(devtools)
+install_version("backports", version = "1.1.0")
+
+install.packages("rmarkdown")
+library(rmarkdown)
+render("1-example.Rmd")
